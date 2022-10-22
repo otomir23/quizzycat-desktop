@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QApplication
 
 from db import Database
 from page import PageContainer
+from pages import HomePage
 
 
 class App(PageContainer):
@@ -15,6 +16,8 @@ class App(PageContainer):
         self.resize(640, 480)
         self.setFixedSize(self.size())
         self.show()
+
+        self.setPage(HomePage(self))
 
 
 if __name__ == '__main__':
