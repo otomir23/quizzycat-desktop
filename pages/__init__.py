@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QLabel, QPushButton
+
 from page import Page
 
 

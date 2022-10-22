@@ -16,6 +16,7 @@ class Quiz:
         self.description = description
         self.authorId = authorId
 
+
 class Question:
     def __init__(self, quizId, question, multiple, id=None):
         self.id = id
@@ -23,12 +24,14 @@ class Question:
         self.question = question
         self.multiple = multiple
 
+
 class Answer:
     def __init__(self, questionId, answer, isCorrect, id=None):
         self.id = id
         self.questionId = questionId
         self.answer = answer
         self.isCorrect = isCorrect
+
 
 class Result:
     def __init__(self, quizId, userId, score, id=None):
