@@ -68,7 +68,17 @@ class Database:
         if user.id is not None:
             self.cursor.execute(
                 '''
-                    UPDATE users SET username = ?, passwordHash = ?, passwordSalt = ?, name = ?, surname = ?, isTeacher = ? WHERE id = ?
+                    UPDATE 
+                        users 
+                    SET 
+                        username = ?, 
+                        passwordHash = ?, 
+                        passwordSalt = ?, 
+                        name = ?, 
+                        surname = ?, 
+                        isTeacher = ? 
+                    WHERE 
+                        id = ?
                 ''', (
                     user.username,
                     user.passwordHash,
