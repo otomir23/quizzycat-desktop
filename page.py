@@ -12,6 +12,11 @@ class PageContainer(QWidget):
         self._page.setParent(self)
         self._page.setGeometry(0, 0, self.width(), self.height())
         self._page.show()
+        self.setWindowTitle(
+            self._page.windowTitle() + ' - quizzycat Desktop'
+            if self._page.windowTitle()
+            else 'quizzycat Desktop'
+        )
 
     def resizeEvent(self, event):
         if self._page:
