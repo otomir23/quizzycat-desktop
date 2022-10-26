@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication
 
-from db import Database
+import db
 from page import PageContainer
 from pages import HomePage
 
@@ -21,7 +21,8 @@ class App(PageContainer):
 
 
 if __name__ == '__main__':
-    db = Database()
     app = QApplication(sys.argv)
     ex = App()
-    sys.exit(app.exec_())
+    status = app.exec_()
+    db.close()
+    sys.exit(status)

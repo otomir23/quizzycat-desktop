@@ -1,41 +1,45 @@
-class User:
-    def __init__(self, username, passwordHash, passwordSalt, name, surname, isTeacher, id=None):
-        self.id = id
-        self.username = username
-        self.passwordHash = passwordHash
-        self.passwordSalt = passwordSalt
-        self.name = name
-        self.surname = surname
-        self.isTeacher = isTeacher
+from peewee import Model, CharField, BooleanField, ForeignKeyField, IntegerField, DateTimeField
+
+from db import db
 
 
-class Quiz:
-    def __init__(self, name, description, authorId, id=None):
-        self.id = id
-        self.name = name
-        self.description = description
-        self.authorId = authorId
+class BaseModel(Model):
+    class Meta:
+        database = db
 
 
-class Question:
-    def __init__(self, quizId, question, multiple, id=None):
-        self.id = id
-        self.quizId = quizId
-        self.question = question
-        self.multiple = multiple
+class User(BaseModel):
+    username = CharField()
+    passwordHash = CharField()
+    passwordSalt = CharField()
+    name = CharField()
+    surname = CharField()
+    isTeacher = BooleanField()
 
 
-class Answer:
-    def __init__(self, questionId, answer, isCorrect, id=None):
-        self.id = id
-        self.questionId = questionId
-        self.answer = answer
-        self.isCorrect = isCorrect
+class Quiz(BaseModel):
+    name = CharField()
+    description = CharField()
+    author = ForeignKeyField(User, backref='quizzes')
 
 
-class Result:
-    def __init__(self, quizId, userId, score, id=None):
-        self.id = id
-        self.quizId = quizId
-        self.userId = userId
-        self.score = score
+class Question(BaseModel):
+    quiz = ForeignKeyField(Quiz, backref='questions')
+    text = CharField()
+    isMultipleChoice = BooleanField()
+
+
+class Answer(BaseModel):
+    question = ForeignKeyField(Question, backref='answers')
+    text = CharField()
+    isCorrect = BooleanField()
+
+
+class Result(BaseModel):
+    quiz = ForeignKeyField(Quiz, backref='results')
+    user = ForeignKeyField(User, backref='results')
+    score = IntegerField()
+    date = DateTimeField()
+
+
+db.create_tables([User, Quiz, Question, Answer, Result])
