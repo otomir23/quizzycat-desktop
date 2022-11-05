@@ -1,4 +1,6 @@
 import sys
+
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication
 
 import db
@@ -16,6 +18,10 @@ class App(PageContainer):
         self.resize(640, 480)
         self.setMinimumSize(self.size())
         self.show()
+
+        p = self.palette()
+        p.setColor(self.backgroundRole(), Qt.white)
+        self.setPalette(p)
 
         self.setPage(HomePage(self))
 
