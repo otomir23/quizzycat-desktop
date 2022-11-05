@@ -16,6 +16,10 @@ class User(BaseModel):
     surname = CharField()
     isTeacher = BooleanField()
 
+    def checkPassword(self, password):
+        from security import check_password
+        return check_password(password, self.passwordHash, self.passwordSalt)
+
 
 class Quiz(BaseModel):
     name = CharField()
