@@ -1,6 +1,7 @@
 import sys
 
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QFontDatabase, QFont
 from PyQt5.QtWidgets import QApplication
 
 import db
@@ -29,6 +30,12 @@ class App(PageContainer):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = App()
+
+    font_bold = QFontDatabase.addApplicationFont('assets/fonts/Inter-Bold.ttf')
+    font_regular = QFontDatabase.addApplicationFont('assets/fonts/Inter-Medium.ttf')
+
+    app.setFont(QFont('Inter', 10, QFont.Normal))
+
     status = app.exec_()
     db.db.close()
     sys.exit(status)
