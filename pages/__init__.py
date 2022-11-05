@@ -1,24 +1,30 @@
-from PyQt5.QtWidgets import QLabel, QPushButton
-
+from db.models import User
 from page import Page
 
 
-class HomePage(Page):
+class AuthPage(Page):
     def initUI(self):
-        super().initUI('pages/home.ui')
-        self.pushButton.clicked.connect(self.btnClicked)
+        super().initUI('pages/auth.ui')
+        self.loginButton.clicked.connect(self.login)
 
-    def btnClicked(self):
-        self._parent.setPage(SecondPage(self._parent))
+    def login(self):
+        self.errorLabel.setText('')
 
+        username = self.usernameInput.text()
+        password = self.passwordInput.text()
 
-class SecondPage(Page):
-    def initUI(self):
-        super().initUI()
-        QLabel('Second Page', self).move(50, 50)
-        self.btn = QPushButton("go back 😹", self)
-        self.btn.clicked.connect(self.btnClicked)
-        self.btn.move(50, 100)
+        if not username or not password:
+            self.errorLabel.setText('Username and password are required')
+            return
 
-    def btnClicked(self):
-        self._parent.setPage(HomePage(self._parent))
+        user = User.select().where(User.username == username).first()
+
+        if not user:
+            self.errorLabel.setText('User not found')
+            return
+
+        if not user.checkPassword(password):
+            self.errorLabel.setText('Incorrect password')
+            return
+
+        print('Logged in as', user.name, user.surname)

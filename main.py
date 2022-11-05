@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QApplication
 
 import db
 from page import PageContainer
-from pages import HomePage
+from pages import AuthPage
 
 
 class App(PageContainer):
@@ -24,7 +24,7 @@ class App(PageContainer):
         p.setColor(self.backgroundRole(), Qt.white)
         self.setPalette(p)
 
-        self.setPage(HomePage(self))
+        self.setPage(AuthPage(self))
 
 
 if __name__ == '__main__':
