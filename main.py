@@ -24,5 +24,5 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = App()
     status = app.exec_()
-    db.close()
+    db.db.close()
     sys.exit(status)
