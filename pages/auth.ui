@@ -128,13 +128,21 @@
                             </property>
                             <property name="styleSheet">
                                 <string notr="true">
-                                    border-radius: 5px;
-                                    background-color: #000;
-                                    color: #fff;
-                                    padding: 10px;
-                                    font-size: 14px;
-                                    max-width: 150px;
+                                    QPushButton {
+                                        border-radius: 5px;
+                                        background-color: #000;
+                                        color: #fff;
+                                        padding: 10px;
+                                        font-size: 14px;
+                                        max-width: 150px;
+                                    }
+                                    QPushButton:hover {
+                                        background-color: #111;
+                                    }
                                 </string>
+                            </property>
+                            <property name="cursor">
+                                <cursorShape>PointingHandCursor</cursorShape>
                             </property>
                         </widget>
                     </item>
