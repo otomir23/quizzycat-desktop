@@ -1,7 +1,7 @@
 import sys
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFontDatabase, QFont
+from PyQt5.QtGui import QFontDatabase, QFont, QIcon
 from PyQt5.QtWidgets import QApplication
 
 import db
@@ -16,6 +16,9 @@ class App(PageContainer):
 
     def initUI(self):
         self.setWindowTitle('quizzycat Desktop')
+        self.setWindowIcon(QIcon(
+            'assets/images/icon.png'
+        ))
         self.resize(640, 480)
         self.setMinimumSize(self.size())
         self.show()
