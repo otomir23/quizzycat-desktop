@@ -30,6 +30,10 @@ class App(PageContainer):
         self.setPage(AuthPage(self))
 
 
+def except_hook(cls, exception, traceback):
+    sys.__excepthook__(cls, exception, traceback)
+
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = App()
@@ -39,6 +43,7 @@ if __name__ == '__main__':
 
     app.setFont(QFont('Inter', 10, QFont.Normal))
 
+    sys.excepthook = except_hook
     status = app.exec_()
     db.db.close()
     sys.exit(status)
