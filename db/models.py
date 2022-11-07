@@ -47,3 +47,16 @@ class Result(BaseModel):
 
 
 db.create_tables([User, Quiz, Question, Answer, Result])
+# Create teacher account if there are no teachers
+if User.select().where(User.isTeacher == True).count() == 0:
+    from security import generate_password_hash
+
+    password_hash, password_salt = generate_password_hash('hackme')
+    User.create(
+        username='default',
+        passwordHash=password_hash,
+        passwordSalt=password_salt,
+        name='Default',
+        surname='Teacher',
+        isTeacher=True
+    )
