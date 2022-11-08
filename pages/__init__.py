@@ -1,4 +1,6 @@
-from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon, QCursor
+from PyQt5.QtWidgets import QLabel, QPushButton, QRadioButton, QCheckBox
 
 from db.models import User, Quiz
 from page import Page, PageContainer
@@ -60,7 +62,6 @@ class DashboardPage(Page):
 
         self.quizStartButton.clicked.connect(self.startQuiz)
 
-
     def updateCard(self):
         if len(self.quizzes) == 0:
             self.quizNameLabel.setText('No quizzes available')
@@ -93,7 +94,190 @@ class DashboardPage(Page):
     def startQuiz(self):
         quiz = self.quizzes[self.card_index]
         print('Starting quiz', quiz.name)
-        # TODO: Go to quiz page
+        self._parent.setPage(QuizPage(self._parent, self.user, quiz))
 
     def logout(self):
         self._parent.setPage(AuthPage(self._parent))
+
+
+class QuizPage(Page):
+    def __init__(self, parent: PageContainer, user: User, quiz: Quiz):
+        self.user = user
+        self.quiz = quiz
+        self.questionIndex = 0
+        self.answers = [None] * quiz.questions.count()
+        super().__init__(parent)
+
+    def initUI(self):
+        super().initUI('pages/quiz.ui')
+
+        self.setWindowTitle(self.quiz.name + ' - Quiz')
+
+        btn = self.questionButton('?')
+        btn.clicked.connect(lambda: self.goToQuestion(-1))
+        self.questionList.addWidget(btn)
+
+        for i, question in enumerate(self.quiz.questions):
+            btn = self.questionButton(str(i + 1))
+            btn.clicked.connect(lambda _, n=i: self.goToQuestion(n))
+
+            self.questionList.addWidget(btn)
+        self.questionList.addStretch()
+
+        btn = self.questionButton('')
+        btn.clicked.connect(lambda: self.goToQuestion(self.quiz.questions.count()))
+        btn.setIcon(QIcon('assets/images/submit.png'))
+        self.questionList.addWidget(btn)
+
+        self.goToQuestion(-1)
+
+        self.nextButton.clicked.connect(lambda _: self.goToQuestion(self.questionIndex + 1))
+
+    def goToQuestion(self, index):
+        self.questionIndex = index
+
+        n = -1
+        for i in range(self.questionList.count()):
+            btn = self.questionList.itemAt(i).widget()
+            if btn is None:
+                continue
+            if n == index:
+                btn.setProperty('selected', True)
+            else:
+                btn.setProperty('selected', False)
+            btn.style().unpolish(btn)
+            btn.style().polish(btn)
+
+            n += 1
+
+        for i in reversed(range(self.answerList.count())):
+            self.answerList.itemAt(i).widget().deleteLater()
+        self.nextButton.show()
+
+        if index == -1:
+            self.titleLabel.setText(self.quiz.name)
+            self.subtitleLabel.setText(self.quiz.description)
+            self.nextButton.setText('Start')
+        elif index == self.quiz.questions.count():
+            self.nextButton.hide()
+
+            self.titleLabel.setText('Submit')
+            self.subtitleLabel.setText('Are you sure you want to submit?')
+
+            btn = QPushButton('yup ✅✅✅')
+            btn.clicked.connect(self.submit)
+            btn.setStyleSheet('''
+                QPushButton {
+                    border-radius: 5px;
+                    background-color: #000;
+                    color: #fff;
+                    padding: 10px;
+                    font-size: 14px;
+                }
+                
+                QPushButton:hover {
+                    background-color: #111;
+                }
+            ''')
+            btn.setCursor(QCursor(Qt.PointingHandCursor))
+            self.answerList.addWidget(btn)
+
+            btn = QPushButton('i want to double check 🤔')
+            btn.clicked.connect(lambda: self.goToQuestion(0))
+            btn.setStyleSheet('''
+                QPushButton {
+                    border-radius: 5px;
+                    background-color: #000;
+                    color: #fff;
+                    padding: 10px;
+                    font-size: 14px;
+                }
+                
+                QPushButton:hover {
+                    background-color: #111;
+                }
+            ''')
+            btn.setCursor(QCursor(Qt.PointingHandCursor))
+            self.answerList.addWidget(btn)
+        else:
+            question = self.quiz.questions[index]
+            self.titleLabel.setText(question.text)
+            self.subtitleLabel.setText(
+                question.isMultipleChoice and 'Multiple answer' or 'Single answer'
+            )
+            self.nextButton.setText('Next')
+
+            for i, answer in enumerate(self.quiz.questions[index].answers):
+                btn = self.answerCheckbox(answer.text) if question.isMultipleChoice \
+                    else self.answerRadioButton(answer.text)
+
+                btn.clicked.connect(lambda _, n=i: self.answerSelected(n))
+
+                if self.answers[index] is not None and (
+                        question.isMultipleChoice and i in self.answers[index] or
+                        not question.isMultipleChoice and i == self.answers[index]
+                ):
+                    btn.setChecked(True)
+
+                self.answerList.addWidget(btn)
+
+    def questionButton(self, text):
+        btn = QPushButton(text)
+        btn.setProperty('selected', False)
+        btn.setStyleSheet('''
+                QPushButton {
+                    background-color: #fff;
+                    border: 1px solid #000;
+                    border-radius: 4px;
+                    font-size: 10px;
+                    font-weight: bold;
+                    padding: 1px;
+                }
+                
+                QPushButton:hover {
+                    background-color: #eee;
+                }   
+                
+                QPushButton[selected=true] {
+                    background-color: #000;
+                    color: #fff;
+                }
+            ''')
+        btn.setFixedSize(24, 24)
+        btn.setCursor(QCursor(Qt.PointingHandCursor))
+
+        return btn
+
+    def answerRadioButton(self, text):
+        btn = QRadioButton(text)
+        btn.setStyleSheet('''
+            QRadioButton {
+                font-size: 14px;
+            }
+        ''')
+        btn.setCursor(QCursor(Qt.PointingHandCursor))
+        return btn
+
+    def answerCheckbox(self, text):
+        btn = QCheckBox(text)
+        btn.setStyleSheet('''
+            QCheckBox {
+                font-size: 14px;
+            }
+        ''')
+        btn.setCursor(QCursor(Qt.PointingHandCursor))
+        return btn
+
+    def answerSelected(self, index):
+        if self.quiz.questions[self.questionIndex].isMultipleChoice:
+            self.answers[self.questionIndex] = [
+                i for i in range(len(self.quiz.questions[self.questionIndex].answers))
+                if self.answerList.itemAt(i).widget().isChecked()
+            ]
+        else:
+            self.answers[self.questionIndex] = index
+
+    def submit(self):
+        print('Submitting quiz', self.quiz.name)
+        print(self.answers)
+
