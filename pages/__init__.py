@@ -1,3 +1,5 @@
+from typing import List, Union
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QCursor
 from PyQt5.QtWidgets import QLabel, QPushButton, QRadioButton, QCheckBox
@@ -279,5 +281,34 @@ class QuizPage(Page):
 
     def submit(self):
         print('Submitting quiz', self.quiz.name)
-        print(self.answers)
+        self._parent.setPage(QuickResultsPage(self._parent, self.user, self.quiz, self.answers))
 
+
+class QuickResultsPage(Page):
+    def __init__(self, parent: PageContainer, user: User, quiz: Quiz, answers: List[Union[int, List[int], None]]):
+        self.user = user
+        self.quiz = quiz
+        self.answers = answers
+
+        super().__init__(parent)
+
+    def initUI(self):
+        super().initUI('pages/qresults.ui')
+
+        score = 0
+        max_score = 0
+        for i, question in enumerate(self.quiz.questions):
+            max_score += 1
+            if self.answers[i] is None:
+                continue
+
+            if question.isMultipleChoice:
+                if self.answers[i] == [i for i, a in enumerate(question.answers) if a.isCorrect]:
+                    score += 1
+            else:
+                if question.answers[self.answers[i]].isCorrect:
+                    score += 1
+
+        self.scoreLabel.setText(f'Score: {score}/{max_score}')
+
+        self.homeButton.clicked.connect(lambda: self._parent.setPage(DashboardPage(self._parent, self.user)))

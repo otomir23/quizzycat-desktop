@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui version="4.0">
+    <class>QuickResultsPage</class>
+    <widget class="QWidget" name="QuickResultsPage">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>640</width>
+                <height>480</height>
+            </rect>
+        </property>
+        <property name="windowTitle">
+            <string>Quick Results</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
+            <property name="spacing">
+                <number>10</number>
+            </property>
+            <property name="leftMargin">
+                <number>24</number>
+            </property>
+            <property name="rightMargin">
+                <number>24</number>
+            </property>
+            <property name="topMargin">
+                <number>24</number>
+            </property>
+            <property name="bottomMargin">
+                <number>24</number>
+            </property>
+            <item>
+                <widget class="QLabel" name="titleLabel">
+                    <property name="text">
+                        <string>Quick Results</string>
+                    </property>
+                    <property name="font">
+                        <font>
+                            <pointsize>16</pointsize>
+                            <bold>true</bold>
+                            <weight>75</weight>
+                        </font>
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <widget class="QLabel" name="scoreLabel">
+                    <property name="text">
+                        <string>Score: 0/0</string>
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <spacer name="verticalSpacer">
+                    <property name="orientation">
+                        <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>QSizePolicy::Expanding</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                        <size>
+                            <width>20</width>
+                            <height>40</height>
+                        </size>
+                    </property>
+                </spacer>
+            </item>
+            <item>
+                <widget class="QPushButton" name="homeButton">
+                    <property name="text">
+                        <string>Home</string>
+                    </property>
+                    <property name="font">
+                        <font>
+                            <pointsize>12</pointsize>
+                            <bold>true</bold>
+                            <weight>75</weight>
+                        </font>
+                    </property>
+                    <property name="styleSheet">
+                        <string notr="true">
+                            QPushButton {
+                            border-radius: 5px;
+                            background-color: #000;
+                            color: #fff;
+                            padding: 10px;
+                            font-size: 14px;
+                            }
+                            QPushButton:hover {
+                            background-color: #111;
+                            }
+                        </string>
+                    </property>
+                    <property name="cursor">
+                        <cursorShape>PointingHandCursor</cursorShape>
+                    </property>
+                </widget>
+            </item>
+        </layout>
+    </widget>
+</ui>
