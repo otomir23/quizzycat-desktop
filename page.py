@@ -31,6 +31,7 @@ class PageContainer(QWidget):
 
         super().resizeEvent(event)
 
+
 class Page(QWidget):
     def __init__(self, parent: PageContainer):
         super().__init__(parent)

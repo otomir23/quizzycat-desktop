@@ -46,7 +46,9 @@ class Result(BaseModel):
     date = DateTimeField()
 
 
+# Create tables if they don't exist
 db.create_tables([User, Quiz, Question, Answer, Result])
+
 # Create teacher account if there are no teachers
 if User.select().where(User.isTeacher == True).count() == 0:
     from security import generate_password_hash

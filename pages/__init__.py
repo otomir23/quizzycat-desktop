@@ -1,5 +1,4 @@
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QLabel
 
 from db.models import User, Quiz
 from page import Page, PageContainer
