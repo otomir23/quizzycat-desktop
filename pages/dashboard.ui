@@ -153,9 +153,9 @@
                             <property name="styleSheet">
                                 <string notr="true">
                                     #quizCard {
-                                        background: #fff;
-                                        border-radius: 6px;
-                                        border: 1px solid #000;
+                                    background: #fff;
+                                    border-radius: 6px;
+                                    border: 1px solid #000;
                                     }
                                 </string>
                             </property>
@@ -247,35 +247,73 @@
                                     </spacer>
                                 </item>
                                 <item>
-                                    <widget class="QPushButton" name="quizStartButton">
-                                        <property name="text">
-                                            <string>Take quiz</string>
+                                    <layout class="QHBoxLayout" name="buttonLayout">
+                                        <property name="spacing">
+                                            <number>4</number>
                                         </property>
-                                        <property name="font">
-                                            <font>
-                                                <pointsize>12</pointsize>
-                                                <bold>true</bold>
-                                                <weight>75</weight>
-                                            </font>
-                                        </property>
-                                        <property name="styleSheet">
-                                            <string notr="true">
-                                                QPushButton {
-                                                    border-radius: 5px;
-                                                    background-color: #000;
-                                                    color: #fff;
-                                                    padding: 10px;
-                                                    font-size: 14px;
-                                                }
-                                                QPushButton:hover {
-                                                    background-color: #111;
-                                                }
-                                            </string>
-                                        </property>
-                                        <property name="cursor">
-                                            <cursorShape>PointingHandCursor</cursorShape>
-                                        </property>
-                                    </widget>
+                                        <item>
+                                            <widget class="QPushButton" name="quizActionButton">
+                                                <property name="text">
+                                                    <string>Take quiz</string>
+                                                </property>
+                                                <property name="font">
+                                                    <font>
+                                                        <pointsize>12</pointsize>
+                                                        <bold>true</bold>
+                                                        <weight>75</weight>
+                                                    </font>
+                                                </property>
+                                                <property name="styleSheet">
+                                                    <string notr="true">
+                                                        QPushButton {
+                                                            border-radius: 5px;
+                                                            background-color: #000;
+                                                            color: #fff;
+                                                            padding: 10px;
+                                                            font-size: 14px;
+                                                        }
+                                                        QPushButton:hover {
+                                                            background-color: #111;
+                                                        }
+                                                    </string>
+                                                </property>
+                                                <property name="cursor">
+                                                    <cursorShape>PointingHandCursor</cursorShape>
+                                                </property>
+                                            </widget>
+                                        </item>
+                                        <item>
+                                            <widget class="QPushButton" name="quizResultsButton">
+                                                <property name="text">
+                                                    <string>Results</string>
+                                                </property>
+                                                <property name="font">
+                                                    <font>
+                                                        <pointsize>12</pointsize>
+                                                        <bold>true</bold>
+                                                        <weight>75</weight>
+                                                    </font>
+                                                </property>
+                                                <property name="styleSheet">
+                                                    <string notr="true">
+                                                        QPushButton {
+                                                            border-radius: 5px;
+                                                            background-color: #000;
+                                                            color: #fff;
+                                                            padding: 10px;
+                                                            font-size: 14px;
+                                                        }
+                                                        QPushButton:hover {
+                                                            background-color: #111;
+                                                        }
+                                                    </string>
+                                                </property>
+                                                <property name="cursor">
+                                                    <cursorShape>PointingHandCursor</cursorShape>
+                                                </property>
+                                            </widget>
+                                        </item>
+                                    </layout>
                                 </item>
                             </layout>
                         </widget>

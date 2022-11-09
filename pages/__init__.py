@@ -2,9 +2,10 @@ from typing import List, Union
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QCursor
-from PyQt5.QtWidgets import QLabel, QPushButton, QRadioButton, QCheckBox
+from PyQt5.QtWidgets import QPushButton, QRadioButton, QCheckBox
 
 from db.models import User, Quiz
+from forms import ManageQuizForm
 from page import Page, PageContainer
 
 
@@ -34,18 +35,16 @@ class AuthPage(Page):
             return
 
         print('Logged in as', user.name, user.surname)
-        if user.isTeacher:
-            print('Teacher')
-            # TODO: Go to teacher page
-        else:
-            self._parent.setPage(DashboardPage(self._parent, user))
+        self._parent.setPage(DashboardPage(self._parent, user))
 
 
 class DashboardPage(Page):
     def __init__(self, parent: PageContainer, user: User):
         self.user = user
         self.card_index = 0
-        self.quizzes = Quiz.select()
+        self.teacher = user.isTeacher
+        self.quizzes = user.quizzes if self.teacher else Quiz.select()
+
         super().__init__(parent)
 
     def initUI(self):
@@ -62,21 +61,31 @@ class DashboardPage(Page):
         self.previousButton.clicked.connect(self.previousCard)
         self.previousButton.setIcon(QIcon('assets/images/previous.png'))
 
-        self.quizStartButton.clicked.connect(self.startQuiz)
+        self.quizActionButton.clicked.connect(self.quizAction)
+        self.quizResultsButton.clicked.connect(self.quizResults)
 
     def updateCard(self):
-        if len(self.quizzes) == 0:
+        if len(self.quizzes) == 0 and not self.teacher:
             self.quizNameLabel.setText('No quizzes available')
             self.quizDescriptionLabel.setText('')
-            self.quizStartButton.hide()
+            self.quizActionButton.hide()
             self.nextButton.hide()
             self.previousButton.hide()
             return
 
-        if self.card_index >= len(self.quizzes):
+        self.quizResultsButton.show()
+        self.quizActionButton.setText('Manage quiz' if self.teacher else 'Take quiz')
+        if self.card_index >= len(self.quizzes) + (1 if self.teacher else 0):
             self.card_index = 0
         elif self.card_index < 0:
-            self.card_index = len(self.quizzes) - 1
+            self.card_index = len(self.quizzes) - (0 if self.teacher else 1)
+
+        if self.teacher and self.card_index == len(self.quizzes):
+            self.quizNameLabel.setText('Create new quiz')
+            self.quizDescriptionLabel.setText('')
+            self.quizActionButton.setText('Create')
+            self.quizResultsButton.hide()
+            return
 
         quiz = self.quizzes[self.card_index]
         self.quizNameLabel.setText(quiz.name)
@@ -93,10 +102,23 @@ class DashboardPage(Page):
         self.card_index -= 1
         self.updateCard()
 
-    def startQuiz(self):
+    def quizAction(self):
+        if self.teacher:
+            self.manageQuizForm = ManageQuizForm(
+                self.user,
+                self.quizzes[self.card_index] if self.card_index < len(self.quizzes) else None
+            )
+            self.manageQuizForm.show()
+
+        else:
+            quiz = self.quizzes[self.card_index]
+            print('Starting quiz', quiz.name)
+            self._parent.setPage(QuizPage(self._parent, self.user, quiz))
+
+    def quizResults(self):
         quiz = self.quizzes[self.card_index]
-        print('Starting quiz', quiz.name)
-        self._parent.setPage(QuizPage(self._parent, self.user, quiz))
+        print('Showing results for', quiz.name)
+        # TODO: Show results
 
     def logout(self):
         self._parent.setPage(AuthPage(self._parent))
