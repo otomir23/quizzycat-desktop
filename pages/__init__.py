@@ -1,10 +1,11 @@
+from datetime import datetime
 from typing import List, Union
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QCursor
 from PyQt5.QtWidgets import QPushButton, QRadioButton, QCheckBox
 
-from db.models import User, Quiz
+from db.models import User, Quiz, Result
 from forms import ManageQuizForm
 from page import Page, PageContainer
 
@@ -334,3 +335,10 @@ class QuickResultsPage(Page):
         self.scoreLabel.setText(f'Score: {score}/{max_score}')
 
         self.homeButton.clicked.connect(lambda: self._parent.setPage(DashboardPage(self._parent, self.user)))
+
+        Result.create(
+            user=self.user,
+            quiz=self.quiz,
+            score=score,
+            date=datetime.now()
+        )
