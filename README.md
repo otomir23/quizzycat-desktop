@@ -1,3 +1,5 @@
+[Пояснительная записка](NOTE.md)
+
 # quizzycat Desktop
 
 This is a desktop application for the [quizzycat](https://quizzycat.vercel.app/) web app.
@@ -51,4 +53,4 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details.
