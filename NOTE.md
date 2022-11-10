@@ -43,15 +43,11 @@ quizzycat Desktop - это настольное приложения для уч
 
 ## Установка
 
-Склонируйте репозиторий и установите зависимости.
-Также можно скачать последний релиз из раздела 
-[Releases](https://github.com/otomir23/quizzycat-desktop/releases).
-
-## Запуск
-
-Для запуска приложения выполните команду `python main.py`.
+Скачайте последний выполняемый файл для нужной операционной системы
+[здесь](https://github.com/otomir23/quizzycat-desktop/releases).
 
 ## Скриншоты
 
-> Скриншотов пока нет, но они скоро появятся.
-
+![Авторизация](.github/screenshots/auth.png)
+![Панель ученика](.github/screenshots/dashboard.png)
+![Прохождение теста](.github/screenshots/quiz.png)

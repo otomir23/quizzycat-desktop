@@ -6,22 +6,19 @@ This is a desktop application for the [quizzycat](https://quizzycat.vercel.app/)
 
 Made using **PyQt5** for **Yandex Academy Lyceum 2022**. 
 
+The code isn't as good as I would like it to be, 
+but I had to finish it in a week, so I had to make some compromises.
 
 ## Installation
 
-Clone the repository and install the dependencies.
+Download latest executable for your OS from 
+[releases](https://github.com/otomir23/quizzycat-desktop/releases).
 
-### MacOS/Linux:
+## Running from source
 
-```bash 
-git clone https://github.com/otomir23/quizzycat-desktop.git
-cd quizzycat-desktop
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-```
+### Setup
 
-### Windows:
+#### Windows:
 
 ```shell
 git clone https://github.com/otomir23/quizzycat-desktop.git
@@ -31,25 +28,21 @@ venv\Scripts\activate.bat
 pip install -r requirements.txt
 ```
 
-## Usage
+#### MacOS/Linux:
 
-Run the application.
-
-MacOS/Linux:
-
-```bash
-python3 main.py
+```bash 
+git clone https://github.com/otomir23/quizzycat-desktop.git
+cd quizzycat-desktop
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 ```
 
-Windows:
+### Run
 
 ```shell
 python main.py
 ```
-
-## Contributing
-
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## License
 
