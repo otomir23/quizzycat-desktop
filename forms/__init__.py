@@ -119,7 +119,7 @@ class ManageQuizForm(QWidget):
             backup_questions = self.questions[:] if self.questions else None
             try:
                 # Open the file using built-in CSV dict reader
-                with open(filename, 'r') as f:
+                with open(filename, 'r', encoding='UTF-8') as f:
                     reader = csv.DictReader(f)
 
                     # Check if the file has the correct format
