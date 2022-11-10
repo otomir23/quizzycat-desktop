@@ -8,6 +8,11 @@ from db import db
 
 
 class ManageQuizForm(QWidget):
+    """Form for creating and editing quizzes. If a quiz is given, the form will be filled with the quiz's data.
+    If no quiz is given, the form will be empty and the user can create a new quiz.
+
+    Not yet implemented."""
+
     def __init__(self, user: User, quiz: Quiz = None):
         self.user = user
         self.quiz = quiz
@@ -16,6 +21,8 @@ class ManageQuizForm(QWidget):
         self.initUI()
 
     def initUI(self):
+        """Initialize UI from a .ui file."""
+
         self.setWindowTitle('Create quiz')
         self.setFixedSize(400, 300)
         self.setWindowIcon(QIcon(
@@ -30,6 +37,8 @@ class ManageQuizForm(QWidget):
         # TODO: Create quiz_manage.ui
 
     def accept(self):
+        """Save the quiz. If the quiz is new, it will be created."""
+
         if self.quiz is None:
             Quiz.create(
                 name=self.nameEdit.text(),
@@ -42,7 +51,4 @@ class ManageQuizForm(QWidget):
             self.quiz.save()
 
         db.commit()
-        self.close()
-
-    def reject(self):
         self.close()

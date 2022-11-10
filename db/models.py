@@ -4,11 +4,15 @@ from db import db
 
 
 class BaseModel(Model):
+    """A base model that will use our SQLite database."""
+
     class Meta:
         database = db
 
 
 class User(BaseModel):
+    """A model that represents a user. A user can be a teacher or a student."""
+
     username = CharField()
     passwordHash = CharField()
     passwordSalt = CharField()
@@ -22,24 +26,32 @@ class User(BaseModel):
 
 
 class Quiz(BaseModel):
+    """A model that represents a quiz. A quiz can be created only by a teacher."""
+
     name = CharField()
     description = CharField()
     author = ForeignKeyField(User, backref='quizzes')
 
 
 class Question(BaseModel):
+    """A model that represents a question. A question can be linked with only one quiz."""
+
     quiz = ForeignKeyField(Quiz, backref='questions')
     text = CharField()
     isMultipleChoice = BooleanField()
 
 
 class Answer(BaseModel):
+    """A model that represents an answer. An answer can be linked with only one question."""
+
     question = ForeignKeyField(Question, backref='answers')
     text = CharField()
     isCorrect = BooleanField()
 
 
 class Result(BaseModel):
+    """A model that represents a result of a quiz completion by a student."""
+
     quiz = ForeignKeyField(Quiz, backref='results')
     user = ForeignKeyField(User, backref='results')
     score = IntegerField()

@@ -10,11 +10,14 @@ from pages import AuthPage
 
 
 class App(PageContainer):
+    """App is the main window of the application."""
+
     def __init__(self):
         super().__init__()
         self.initUI()
 
     def initUI(self):
+        """Set up the main window. Set the window title, icon, size and the background color."""
         self.setWindowTitle('quizzycat Desktop')
         self.setWindowIcon(QIcon(
             'assets/images/icon.png'
@@ -31,19 +34,27 @@ class App(PageContainer):
 
 
 def except_hook(cls, exception, traceback):
+    """Default exception hook."""
     sys.__excepthook__(cls, exception, traceback)
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = App()
+    window = App()
 
+    # Import font assets
     font_bold = QFontDatabase.addApplicationFont('assets/fonts/Inter-Bold.ttf')
     font_regular = QFontDatabase.addApplicationFont('assets/fonts/Inter-Medium.ttf')
 
+    # Set default font
     app.setFont(QFont('Inter', 10, QFont.Normal))
 
+    # Set default exception hook
     sys.excepthook = except_hook
+
+    # Run the application
     status = app.exec_()
+
+    # Close the database connection
     db.db.close()
     sys.exit(status)
