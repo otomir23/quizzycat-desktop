@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui version="4.0">
+    <class>QuizManageForm</class>
+    <widget class="QWidget" name="QuizManageForm">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>640</width>
+                <height>480</height>
+            </rect>
+        </property>
+        <property name="windowTitle">
+            <string>Manage quiz</string>
+        </property>
+        <layout class="QFormLayout" name="formLayout">
+            <property name="spacing">
+                <number>10</number>
+            </property>
+            <property name="leftMargin">
+                <number>24</number>
+            </property>
+            <property name="rightMargin">
+                <number>24</number>
+            </property>
+            <property name="topMargin">
+                <number>24</number>
+            </property>
+            <property name="bottomMargin">
+                <number>24</number>
+            </property>
+            <item row="0" column="0">
+                <widget class="QLabel" name="nameLabel">
+                    <property name="text">
+                        <string>Quiz title</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="0" column="1">
+                <widget class="QLineEdit" name="nameEdit">
+                    <property name="text">
+                        <string/>
+                    </property>
+                    <property name="styleSheet">
+                        <string notr="true">
+                            border-radius: 5px;
+                            border: 1px solid #ccc;
+                            padding: 10px;
+                            font-size: 14px;
+                        </string>
+                    </property>
+                </widget>
+            </item>
+            <item row="1" column="0">
+                <widget class="QLabel" name="descriptionLabel">
+                    <property name="text">
+                        <string>Quiz description</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="1" column="1">
+                <widget class="QTextEdit" name="descriptionEdit">
+                    <property name="text">
+                        <string/>
+                    </property>
+                    <property name="styleSheet">
+                        <string notr="true">
+                            border-radius: 5px;
+                            border: 1px solid #ccc;
+                            padding: 10px;
+                            font-size: 14px;
+                        </string>
+                    </property>
+                </widget>
+            </item>
+            <item row="2" column="0">
+                <widget class="QPushButton" name="loadButton">
+                    <property name="text">
+                        <string>Import</string>
+                    </property>
+                    <property name="toolTip">
+                        <string>Load questions from a CSV file</string>
+                    </property>
+                    <property name="font">
+                        <font>
+                            <pointsize>12</pointsize>
+                            <bold>true</bold>
+                            <weight>75</weight>
+                        </font>
+                    </property>
+                    <property name="styleSheet">
+                        <string notr="true">
+                            background-color: #fff;
+                            color: #000;
+                            font-size: 14px;
+                            border: none;
+                            padding: 10px;
+                            width: 100%;
+                        </string>
+                    </property>
+                    <property name="cursor">
+                        <cursorShape>PointingHandCursor</cursorShape>
+                    </property>
+                </widget>
+            </item>
+            <item row="2" column="1">
+                <widget class="QPushButton" name="deleteButton">
+                    <property name="text">
+                        <string>Delete</string>
+                    </property>
+                    <property name="toolTip">
+                        <string>Delete a quiz (irreversible)</string>
+                    </property>
+                    <property name="font">
+                        <font>
+                            <pointsize>12</pointsize>
+                            <bold>true</bold>
+                            <weight>75</weight>
+                        </font>
+                    </property>
+                    <property name="styleSheet">
+                        <string notr="true">
+                            background-color: #fff;
+                            color: red;
+                            font-size: 14px;
+                            border: none;
+                            padding: 10px;
+                        </string>
+                    </property>
+                    <property name="cursor">
+                        <cursorShape>PointingHandCursor</cursorShape>
+                    </property>
+                </widget>
+            </item>
+            <item row="3" column="0">
+                <widget class="QPushButton" name="cancelButton">
+                    <property name="text">
+                        <string>Cancel</string>
+                    </property>
+                    <property name="font">
+                        <font>
+                            <pointsize>12</pointsize>
+                            <bold>true</bold>
+                            <weight>75</weight>
+                        </font>
+                    </property>
+                    <property name="styleSheet">
+                        <string notr="true">
+                            QPushButton {
+                            border-radius: 5px;
+                            background-color: #000;
+                            color: #fff;
+                            padding: 10px;
+                            font-size: 14px;
+                            width: 100%;
+                            }
+                            QPushButton:hover {
+                            background-color: #111;
+                            }
+                        </string>
+                    </property>
+                    <property name="cursor">
+                        <cursorShape>PointingHandCursor</cursorShape>
+                    </property>
+                </widget>
+            </item>
+            <item row="3" column="1">
+                <widget class="QPushButton" name="saveButton">
+                    <property name="text">
+                        <string>Save</string>
+                    </property>
+                    <property name="font">
+                        <font>
+                            <pointsize>12</pointsize>
+                            <bold>true</bold>
+                            <weight>75</weight>
+                        </font>
+                    </property>
+                    <property name="styleSheet">
+                        <string notr="true">
+                            QPushButton {
+                            border-radius: 5px;
+                            background-color: #000;
+                            color: #fff;
+                            padding: 10px;
+                            font-size: 14px;
+                            }
+                            QPushButton:hover {
+                            background-color: #111;
+                            }
+                        </string>
+                    </property>
+                    <property name="cursor">
+                        <cursorShape>PointingHandCursor</cursorShape>
+                    </property>
+                </widget>
+            </item>
+        </layout>
+    </widget>
+</ui>

@@ -50,7 +50,8 @@ class DashboardPage(Page):
         self.user = user
         self.card_index = 0
         self.teacher = user.isTeacher
-        self.quizzes = user.quizzes if self.teacher else Quiz.select()
+        self.quizzes = []
+        self.manageQuizForm = None
 
         super().__init__(parent)
 
@@ -62,7 +63,7 @@ class DashboardPage(Page):
         self.logoutButton.clicked.connect(self.logout)
         self.logoutButton.setIcon(QIcon('assets/images/logout.png'))
 
-        self.updateCard()
+        self.refresh()
 
         self.nextButton.clicked.connect(self.nextCard)
         self.nextButton.setIcon(QIcon('assets/images/next.png'))
@@ -120,16 +121,27 @@ class DashboardPage(Page):
         """Take the quiz if the user is a student, or manage the quiz if the user is a teacher."""
 
         if self.teacher:
-            self.manageQuizForm = ManageQuizForm(
-                self.user,
-                self.quizzes[self.card_index] if self.card_index < len(self.quizzes) else None
-            )
-            self.manageQuizForm.show()
+            if self.manageQuizForm is None:
+                self.manageQuizForm = ManageQuizForm(
+                    self.user,
+                    self.quizzes[self.card_index] if self.card_index < len(self.quizzes) else None
+                )
+                self.manageQuizForm.show()
+                self.manageQuizForm.closeEvent = lambda event: self.refresh()
 
         else:
             quiz = self.quizzes[self.card_index]
             print('Starting quiz', quiz.name)
             self._parent.setPage(QuizPage(self._parent, self.user, quiz))
+
+    def refresh(self):
+        """Refresh the list of quizzes."""
+
+        self.card_index = 0
+        self.quizzes = self.user.quizzes if self.teacher else Quiz.select()
+        self.updateCard()
+
+        self.manageQuizForm = None
 
     def quizResults(self):
         """Show the results of the quiz."""
