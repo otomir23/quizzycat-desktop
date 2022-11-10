@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import QApplication
 import db
 from page import PageContainer
 from pages import AuthPage
+from util import resource_path
 
 
 class App(PageContainer):
@@ -20,7 +21,7 @@ class App(PageContainer):
         """Set up the main window. Set the window title, icon, size and the background color."""
         self.setWindowTitle('quizzycat Desktop')
         self.setWindowIcon(QIcon(
-            'assets/images/icon.png'
+            resource_path('assets/images/icon.png')
         ))
         self.resize(640, 480)
         self.setMinimumSize(self.size())
@@ -43,8 +44,8 @@ if __name__ == '__main__':
     window = App()
 
     # Import font assets
-    font_bold = QFontDatabase.addApplicationFont('assets/fonts/Inter-Bold.ttf')
-    font_regular = QFontDatabase.addApplicationFont('assets/fonts/Inter-Medium.ttf')
+    font_bold = QFontDatabase.addApplicationFont(resource_path('assets/fonts/Inter-Bold.ttf'))
+    font_regular = QFontDatabase.addApplicationFont(resource_path('assets/fonts/Inter-Medium.ttf'))
 
     # Set default font
     app.setFont(QFont('Inter', 10, QFont.Normal))

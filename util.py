@@ -1,5 +1,7 @@
 import hashlib
+import os
 import secrets
+import sys
 
 
 def hash_password(password: str, password_salt: str) -> str:
@@ -22,3 +24,13 @@ def generate_password_hash(password: str) -> (str, str):
     password_salt = generate_salt()
     password_hash = hash_password(password, password_salt)
     return password_hash, password_salt
+
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller"""
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)

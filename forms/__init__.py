@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import QWidget, QFileDialog, QMessageBox
 
 from db.models import Quiz, User, Question, Answer
 from db import db
+from util import resource_path
 
 
 class ManageQuizForm(QWidget):
@@ -27,20 +28,20 @@ class ManageQuizForm(QWidget):
         self.setWindowTitle('Create quiz')
         self.setFixedSize(400, 300)
         self.setWindowIcon(QIcon(
-            'assets/images/icon.png'
+            resource_path('assets/images/icon.png')
         ))
 
         p = self.palette()
         p.setColor(self.backgroundRole(), Qt.white)
         self.setPalette(p)
 
-        uic.loadUi('forms/quiz_manage.ui', self)
+        uic.loadUi(resource_path('forms/quiz_manage.ui'), self)
 
         self.loadButton.clicked.connect(self.loadQuestions)
-        self.loadButton.setIcon(QIcon('assets/images/import.png'))
+        self.loadButton.setIcon(QIcon(resource_path('assets/images/import.png')))
 
         self.deleteButton.clicked.connect(self.delete)
-        self.deleteButton.setIcon(QIcon('assets/images/delete.png'))
+        self.deleteButton.setIcon(QIcon(resource_path('assets/images/delete.png')))
 
         self.saveButton.clicked.connect(self.accept)
         self.cancelButton.clicked.connect(self.reject)

@@ -8,13 +8,14 @@ from PyQt5.QtWidgets import QPushButton, QRadioButton, QCheckBox
 from db.models import User, Quiz, Result
 from forms import ManageQuizForm
 from page import Page, PageContainer
+from util import resource_path
 
 
 class AuthPage(Page):
     """A page for logging in to the application."""
 
     def initUI(self):
-        super().initUI('pages/auth.ui')
+        super().initUI(resource_path('pages/auth.ui'))
         self.loginButton.clicked.connect(self.login)
 
     def login(self):
@@ -57,18 +58,18 @@ class DashboardPage(Page):
 
     def initUI(self):
         """Initialize the UI. Icons are loaded from the 'assets' folder."""
-        super().initUI('pages/dashboard.ui')
+        super().initUI(resource_path('pages/dashboard.ui'))
 
         self.usernameLabel.setText(self.user.name + ' ' + self.user.surname)
         self.logoutButton.clicked.connect(self.logout)
-        self.logoutButton.setIcon(QIcon('assets/images/logout.png'))
+        self.logoutButton.setIcon(QIcon(resource_path('assets/images/logout.png')))
 
         self.refresh()
 
         self.nextButton.clicked.connect(self.nextCard)
-        self.nextButton.setIcon(QIcon('assets/images/next.png'))
+        self.nextButton.setIcon(QIcon(resource_path('assets/images/next.png')))
         self.previousButton.clicked.connect(self.previousCard)
-        self.previousButton.setIcon(QIcon('assets/images/previous.png'))
+        self.previousButton.setIcon(QIcon(resource_path('assets/images/previous.png')))
 
         self.quizActionButton.clicked.connect(self.quizAction)
         self.quizResultsButton.clicked.connect(self.quizResults)
@@ -169,7 +170,7 @@ class QuizPage(Page):
     def initUI(self):
         """Initialize the UI. Icons are loaded from the 'assets' folder."""
 
-        super().initUI('pages/quiz.ui')
+        super().initUI(resource_path('pages/quiz.ui'))
 
         self.setWindowTitle(self.quiz.name + ' - Quiz')
 
@@ -189,7 +190,7 @@ class QuizPage(Page):
         # Hardcoded submission button
         btn = self.questionButton('')
         btn.clicked.connect(lambda: self.goToQuestion(self.quiz.questions.count()))
-        btn.setIcon(QIcon('assets/images/submit.png'))
+        btn.setIcon(QIcon(resource_path('assets/images/submit.png')))
         self.questionList.addWidget(btn)
 
         # Set the quiz information page
@@ -390,7 +391,7 @@ class QuickResultsPage(Page):
     def initUI(self):
         """Initialize the UI. Also saves the results to the database."""
 
-        super().initUI('pages/qresults.ui')
+        super().initUI(resource_path('pages/qresults.ui'))
 
         score, max_score = self.calculateScore()
 

@@ -1,6 +1,7 @@
 from peewee import Model, CharField, BooleanField, ForeignKeyField, IntegerField, DateTimeField
 
 from db import db
+from util import generate_password_hash, check_password
 
 
 class BaseModel(Model):
@@ -21,7 +22,6 @@ class User(BaseModel):
     isTeacher = BooleanField()
 
     def checkPassword(self, password):
-        from security import check_password
         return check_password(password, self.passwordHash, self.passwordSalt)
 
 
@@ -63,8 +63,6 @@ db.create_tables([User, Quiz, Question, Answer, Result])
 
 # Create teacher account if there are no teachers
 if User.select().where(User.isTeacher == True).count() == 0:
-    from security import generate_password_hash
-
     password_hash, password_salt = generate_password_hash('hackme')
     User.create(
         username='default',
