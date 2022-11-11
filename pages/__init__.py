@@ -133,19 +133,21 @@ class DashboardPage(Page):
                     self.quizzes[self.card_index] if self.card_index < len(self.quizzes) else None
                 )
                 self.form.show()
-                self.form.closeEvent = lambda event: (self.refresh(), setattr(self, 'form', None))
+                self.form.closeEvent = self.refresh
 
         else:
             quiz = self.quizzes[self.card_index]
             print('Starting quiz', quiz.name)
             self._parent.setPage(QuizPage(self._parent, self.user, quiz))
 
-    def refresh(self):
+    def refresh(self, *args):
         """Refresh the list of quizzes."""
 
         self.card_index = 0
         self.quizzes = self.user.quizzes if self.teacher else Quiz.select()
         self.updateCard()
+
+        self.form = None
 
     def quizResults(self):
         """Show the results of the quiz."""
@@ -161,7 +163,7 @@ class DashboardPage(Page):
             if self.form is None:
                 self.form = CreateUserForm()
                 self.form.show()
-                self.form.closeEvent = lambda event: (setattr(self, 'form', None))
+                self.form.closeEvent = self.refresh
 
     def logout(self):
         """Go back to the login page."""
