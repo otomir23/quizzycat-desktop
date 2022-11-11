@@ -73,16 +73,3 @@ if User.select().where(User.isTeacher == True).count() == 0:
         isTeacher=True
     )
 
-# Create a student account if there are no students
-# TODO this is temporary, until I implement user creation
-if User.select().where(User.isTeacher == False).count() == 0:
-    password_hash, password_salt = generate_password_hash('password')
-    User.create(
-        username='demo',
-        passwordHash=password_hash,
-        passwordSalt=password_salt,
-        name='Demo',
-        surname='Student',
-        isTeacher=False
-    )
-

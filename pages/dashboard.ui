@@ -86,6 +86,23 @@
                         </spacer>
                     </item>
                     <item>
+                        <widget class="QPushButton" name="createUserButton">
+                            <property name="text">
+                                <string/>
+                            </property>
+                            <property name="styleSheet">
+                                <string notr="true">
+                                    border: none;
+                                    width: 20px;
+                                    height: 20px;
+                                </string>
+                            </property>
+                            <property name="cursor">
+                                <cursorShape>PointingHandCursor</cursorShape>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
                         <widget class="QPushButton" name="logoutButton">
                             <property name="text">
                                 <string/>

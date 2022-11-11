@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui version="4.0">
+    <class>UserCreateForm</class>
+    <widget class="QWidget" name="UserCreateForm">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>640</width>
+                <height>980</height>
+            </rect>
+        </property>
+        <property name="windowTitle">
+            <string>Create user</string>
+        </property>
+        <layout class="QFormLayout" name="formLayout">
+            <property name="spacing">
+                <number>10</number>
+            </property>
+            <property name="leftMargin">
+                <number>24</number>
+            </property>
+            <property name="rightMargin">
+                <number>24</number>
+            </property>
+            <property name="topMargin">
+                <number>24</number>
+            </property>
+            <property name="bottomMargin">
+                <number>24</number>
+            </property>
+            <item row="0" column="0">
+                <widget class="QLabel" name="usernameLabel">
+                    <property name="text">
+                        <string>Username</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="0" column="1">
+                <widget class="QLineEdit" name="usernameEdit">
+                    <property name="text">
+                        <string/>
+                    </property>
+                    <property name="styleSheet">
+                        <string notr="true">
+                            border-radius: 5px;
+                            border: 1px solid #ccc;
+                            padding: 10px;
+                            font-size: 14px;
+                        </string>
+                    </property>
+                </widget>
+            </item>
+            <item row="1" column="0">
+                <widget class="QLabel" name="nameLabel">
+                    <property name="text">
+                        <string>Name</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="1" column="1">
+                <widget class="QLineEdit" name="nameEdit">
+                    <property name="text">
+                        <string/>
+                    </property>
+                    <property name="styleSheet">
+                        <string notr="true">
+                            border-radius: 5px;
+                            border: 1px solid #ccc;
+                            padding: 10px;
+                            font-size: 14px;
+                        </string>
+                    </property>
+                </widget>
+            </item>
+            <item row="2" column="0">
+                <widget class="QLabel" name="surnameLabel">
+                    <property name="text">
+                        <string>Surname</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="2" column="1">
+                <widget class="QLineEdit" name="surnameEdit">
+                    <property name="text">
+                        <string/>
+                    </property>
+                    <property name="styleSheet">
+                        <string notr="true">
+                            border-radius: 5px;
+                            border: 1px solid #ccc;
+                            padding: 10px;
+                            font-size: 14px;
+                        </string>
+                    </property>
+                </widget>
+            </item>
+            <item row="3" column="0">
+                <widget class="QLabel" name="passwordLabel">
+                    <property name="text">
+                        <string>Password</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="3" column="1">
+                <widget class="QLineEdit" name="passwordEdit">
+                    <property name="text">
+                        <string/>
+                    </property>
+                    <property name="styleSheet">
+                        <string notr="true">
+                            border-radius: 5px;
+                            border: 1px solid #ccc;
+                            padding: 10px;
+                            font-size: 14px;
+                        </string>
+                    </property>
+                    <property name="echoMode">
+                        <enum>QLineEdit::Password</enum>
+                    </property>
+                </widget>
+            </item>
+            <item row="4" column="0">
+                <widget class="QCheckBox" name="teacherCheckbox">
+                    <property name="text">
+                        <string>Teacher</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="5" column="0">
+                <widget class="QPushButton" name="cancelButton">
+                    <property name="text">
+                        <string>Cancel</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="5" column="1">
+                <widget class="QPushButton" name="createButton">
+                    <property name="text">
+                        <string>Create</string>
+                    </property>
+                </widget>
+            </item>
+        </layout>
+    </widget>
+    <resources/>
+    <connections/>
+</ui>

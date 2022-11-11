@@ -6,7 +6,7 @@ from PyQt5.QtGui import QIcon, QCursor
 from PyQt5.QtWidgets import QPushButton, QRadioButton, QCheckBox
 
 from db.models import User, Quiz, Result
-from forms import ManageQuizForm
+from forms import ManageQuizForm, CreateUserForm
 from page import Page, PageContainer
 from util import resource_path
 
@@ -52,7 +52,7 @@ class DashboardPage(Page):
         self.card_index = 0
         self.teacher = user.isTeacher
         self.quizzes = []
-        self.manageQuizForm = None
+        self.form = None
 
         super().__init__(parent)
 
@@ -63,6 +63,11 @@ class DashboardPage(Page):
         self.usernameLabel.setText(self.user.name + ' ' + self.user.surname)
         self.logoutButton.clicked.connect(self.logout)
         self.logoutButton.setIcon(QIcon(resource_path('assets/images/logout.png')))
+        self.createUserButton.clicked.connect(self.createUser)
+        self.createUserButton.setIcon(QIcon(resource_path('assets/images/user.png')))
+
+        if not self.teacher:
+            self.createUserButton.hide()
 
         self.refresh()
 
@@ -122,13 +127,13 @@ class DashboardPage(Page):
         """Take the quiz if the user is a student, or manage the quiz if the user is a teacher."""
 
         if self.teacher:
-            if self.manageQuizForm is None:
-                self.manageQuizForm = ManageQuizForm(
+            if self.form is None:
+                self.form = ManageQuizForm(
                     self.user,
                     self.quizzes[self.card_index] if self.card_index < len(self.quizzes) else None
                 )
-                self.manageQuizForm.show()
-                self.manageQuizForm.closeEvent = lambda event: self.refresh()
+                self.form.show()
+                self.form.closeEvent = lambda event: (self.refresh(), setattr(self, 'form', None))
 
         else:
             quiz = self.quizzes[self.card_index]
@@ -142,14 +147,21 @@ class DashboardPage(Page):
         self.quizzes = self.user.quizzes if self.teacher else Quiz.select()
         self.updateCard()
 
-        self.manageQuizForm = None
-
     def quizResults(self):
         """Show the results of the quiz."""
 
         quiz = self.quizzes[self.card_index]
         print('Showing results for', quiz.name)
         # TODO: Show results
+
+    def createUser(self):
+        """Create a new user."""
+
+        if self.teacher:
+            if self.form is None:
+                self.form = CreateUserForm()
+                self.form.show()
+                self.form.closeEvent = lambda event: (setattr(self, 'form', None))
 
     def logout(self):
         """Go back to the login page."""

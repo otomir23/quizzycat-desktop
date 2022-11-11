@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QWidget, QFileDialog, QMessageBox
 
 from db.models import Quiz, User, Question, Answer
 from db import db
-from util import resource_path
+from util import resource_path, generate_password_hash
 
 
 class ManageQuizForm(QWidget):
@@ -186,3 +186,85 @@ class ManageQuizForm(QWidget):
                 db.commit()
 
             self.close()
+
+
+class CreateUserForm(QWidget):
+    """Form for creating a new user."""
+
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        """Initialize UI from a .ui file."""
+
+        self.setWindowTitle('Create user')
+        self.setFixedSize(400, 300)
+        self.setWindowIcon(QIcon(
+            resource_path('assets/images/icon.png')
+        ))
+
+        p = self.palette()
+        p.setColor(self.backgroundRole(), Qt.white)
+        self.setPalette(p)
+
+        uic.loadUi(resource_path('forms/user_create.ui'), self)
+
+        self.createButton.clicked.connect(self.accept)
+        self.cancelButton.clicked.connect(self.reject)
+
+    def accept(self):
+        """Create the user."""
+
+        # Check if the username is specified and unique
+        if self.usernameEdit.text().strip() == '':
+            # Display an error dialog
+            QMessageBox.critical(
+                self,
+                'Error',
+                'The username must be specified.'
+            )
+
+            return
+
+        if User.select().where(User.username == self.usernameEdit.text()).exists():
+            # Display an error dialog
+            QMessageBox.critical(
+                self,
+                'Error',
+                'The username is already taken.'
+            )
+
+            return
+
+        # Check if the password is specified
+        if self.passwordEdit.text().strip() == '':
+            # Display an error dialog
+            QMessageBox.critical(
+                self,
+                'Error',
+                'The user must have a password.'
+            )
+
+            return
+
+        # Create the user
+        password_hash, password_salt = generate_password_hash(self.passwordEdit.text())
+
+        # Create the user
+        User.create(
+            username=self.usernameEdit.text(),
+            name=self.nameEdit.text() or "Name",
+            surname=self.surnameEdit.text() or "Surname",
+            passwordHash=password_hash,
+            passwordSalt=password_salt,
+            isTeacher=bool(self.teacherCheckbox.isChecked())
+        )
+        db.commit()
+
+        self.close()
+
+    def reject(self):
+        """Close the form without saving."""
+
+        self.close()
