@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import List, Union
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon, QCursor
+from PyQt5.QtGui import QIcon, QCursor, QPixmap
 from PyQt5.QtWidgets import QPushButton, QRadioButton, QCheckBox
 
 from db.models import User, Quiz, Result
@@ -154,7 +154,8 @@ class DashboardPage(Page):
 
         quiz = self.quizzes[self.card_index]
         print('Showing results for', quiz.name)
-        # TODO: Show results
+
+        self._parent.setPage(ResultsPage(self._parent, self.user, quiz))
 
     def createUser(self):
         """Create a new user."""
@@ -383,51 +384,11 @@ class QuizPage(Page):
         else:
             self.answers[self.questionIndex] = index
 
-    def submit(self):
-        """Called when the submit button is clicked. Checks the answers and redirects
-        to the results page."""
-
-        print('Submitting quiz', self.quiz.name)
-        self._parent.setPage(QuickResultsPage(self._parent, self.user, self.quiz, self.answers))
-
-
-class QuickResultsPage(Page):
-    """This page is for displaying the results of a quiz. This is intended to be used
-    temporarily, until the full results page is implemented."""
-
-    def __init__(self, parent: PageContainer, user: User, quiz: Quiz, answers: List[Union[int, List[int], None]]):
-        self.user = user
-        self.quiz = quiz
-        self.answers = answers
-
-        super().__init__(parent)
-
-    def initUI(self):
-        """Initialize the UI. Also saves the results to the database."""
-
-        super().initUI(resource_path('pages/qresults.ui'))
-
-        score, max_score = self.calculateScore()
-
-        self.scoreLabel.setText(f'Score: {score}/{max_score}')
-
-        self.homeButton.clicked.connect(lambda: self._parent.setPage(DashboardPage(self._parent, self.user)))
-
-        Result.create(
-            user=self.user,
-            quiz=self.quiz,
-            score=score,
-            date=datetime.now()
-        )
-
     def calculateScore(self):
         """Calculate the score of the quiz. This is a bit of a mess, but it works."""
 
         score = 0
-        max_score = 0
         for i, question in enumerate(self.quiz.questions):
-            max_score += 1
-
             # Do not add to score if the question was not answered
             if self.answers[i] is None:
                 continue
@@ -441,4 +402,94 @@ class QuickResultsPage(Page):
                 if question.answers[self.answers[i]].isCorrect:
                     score += 1
 
-        return score, max_score
+        return score
+
+    def submit(self):
+        """Called when the submit button is clicked. Checks the answers and redirects
+        to the results page."""
+
+        print('Submitting quiz', self.quiz.name)
+
+        Result.create(
+            user=self.user,
+            quiz=self.quiz,
+            score=self.calculateScore(),
+            date=datetime.now()
+        )
+
+        self._parent.setPage(ResultsPage(self._parent, self.user, self.quiz))
+
+
+class ResultsPage(Page):
+    """This page is for displaying the results of a quiz."""
+
+    def __init__(self, parent: PageContainer, user: User, quiz: Quiz):
+        self.user = user
+        self.quiz = quiz
+        if self.user.isTeacher:
+            self.results = Result.select().where(Result.quiz == self.quiz)
+        else:
+            self.results = Result.select().where(Result.user == self.user, Result.quiz == self.quiz)
+
+        super().__init__(parent)
+
+    def initUI(self):
+        """Initialize the UI."""
+
+        super().initUI(resource_path('pages/results.ui'))
+
+        self.homeButton.clicked.connect(lambda: self._parent.setPage(DashboardPage(self._parent, self.user)))
+        self.homeButton.setIcon(QIcon(resource_path('assets/images/home.png')))
+
+        self.nextButton.clicked.connect(self.nextResult)
+        self.nextButton.setIcon(QIcon(resource_path('assets/images/next.png')))
+
+        self.previousButton.clicked.connect(self.previousResult)
+        self.previousButton.setIcon(QIcon(resource_path('assets/images/previous.png')))
+
+        # Set icons
+        self.userIcon.setPixmap(QPixmap(resource_path('assets/images/user.png')))
+        self.dateIcon.setPixmap(QPixmap(resource_path('assets/images/date.png')))
+        self.timeIcon.setPixmap(QPixmap(resource_path('assets/images/time.png')))
+
+        # Set the current result to the newest one
+        self.resultIndex = len(self.results) - 1
+
+        self.updateResult()
+
+    def updateResult(self):
+        """Update the UI with the current result."""
+
+        if len(self.results) == 0:
+            self.titleLabel.setText('No results')
+            self.resultCard.hide()
+            self.nextButton.hide()
+            self.previousButton.hide()
+            return
+
+
+        result = self.results[self.resultIndex]
+
+        self.scoreLabel.setText(f'{result.score}/{len(result.quiz.questions)}')
+        if len(result.quiz.questions) == 0:
+            self.percentageLabel.setText('0%')
+        else:
+            self.percentageLabel.setText(f'{int(result.score / len(result.quiz.questions) * 100)}%')
+        self.nameLabel.setText(f'{result.user.name} {result.user.surname}')
+        self.dateLabel.setText(f'{result.date.strftime("%d/%m/%Y")}')
+        self.timeLabel.setText(f'{result.date.strftime("%H:%M:%S")}')
+
+        self.nextButton.setEnabled(self.resultIndex < len(self.results) - 1)
+        self.previousButton.setEnabled(self.resultIndex > 0)
+
+    def nextResult(self):
+        """Go to the next result."""
+
+        self.resultIndex += 1
+        self.updateResult()
+
+    def previousResult(self):
+        """Go to the previous result."""
+
+        self.resultIndex -= 1
+        self.updateResult()
